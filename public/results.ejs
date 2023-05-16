@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Searching for...</title>
+    </head>
+    <body>
+        <h1>Top 10 Results of: "<%= word %>"</h1>
+
+        <ul>
+            <% results.forEach((result) => { %>
+                <li><a href="http://localhost:3000/Files/<%= result.file %>">http://localhost:3000/Files/<%= result.file %></a> <%= result.time %>ms </li>
+            <% }) %>
+        </ul>
+    </body>
+</html>
