@@ -11,7 +11,7 @@ app.use(express.static(__dirname + '/public'));
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
 
-const search = (word) => {
+const search = (words) => {
   const filesPath = path.join(__dirname, 'public', 'Files');
   const files = fs.readdirSync(filesPath);
   const result = [];
@@ -23,10 +23,14 @@ const search = (word) => {
 
     const endTime = new Date().getTime();
     const timeTaken = endTime - startTime;
+
+    words.forEach((w) => {
+      if (fileContent.includes(w)) {
+        result.push({ file, time: timeTaken });
+        return;
+      }
+    })
     
-    if (fileContent.includes(word)) {
-      result.push({ file, time: timeTaken });
-    }
   });
 
   return result;
@@ -38,7 +42,8 @@ app.get('/', (req, res) => {
 });
 
 app.get('/results', (req, res) => {
-  const results = search(req.query.search_query);
+  const words = req.query.search_query.split(" ")
+  const results = search(words);
 
   res.render('results', {
     word: req.query.search_query,
